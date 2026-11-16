@@ -1,0 +1,57 @@
+# CanteenFinder – backend services
+# Start:  docker compose up -d
+# Stop:   docker compose down        (data is kept in the volumes)
+# Reset:  docker compose down -v     (deletes ALL data, re-runs db/init)
+
+services:
+  postgis:
+    image: postgis/postgis:16-3.4
+    # The image is built for amd64; Docker Desktop on Apple Silicon runs it via Rosetta.
+    platform: linux/amd64
+    container_name: canteen-postgis
+    restart: unless-stopped
+    # Berlin time zone, so CURRENT_DATE is "today" in Kiel and not in UTC
+    command: ["postgres", "-c", "timezone=Europe/Berlin"]
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      GEOSERVER_DB_USER: ${GEOSERVER_DB_USER}
+      GEOSERVER_DB_PASSWORD: ${GEOSERVER_DB_PASSWORD}
+      TZ: Europe/Berlin
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgis_data:/var/lib/postgresql/data
+      # Every *.sql / *.sh file in here runs ONCE, when the database is created for the first time
+      - ./db/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  geoserver:
+    image: docker.osgeo.org/geoserver:2.26.2
+    container_name: canteen-geoserver
+    restart: unless-stopped
+    depends_on:
+      postgis:
+        condition: service_healthy
+    environment:
+      GEOSERVER_ADMIN_USER: ${GEOSERVER_ADMIN_USER}
+      GEOSERVER_ADMIN_PASSWORD: ${GEOSERVER_ADMIN_PASSWORD}
+      SKIP_DEMO_DATA: "true"
+      # Allow the Vue dev server (another port = another origin) to call WFS/WMS
+      CORS_ENABLED: "true"
+      CORS_ALLOWED_ORIGINS: "*"
+      CORS_ALLOWED_METHODS: "GET,POST,HEAD,OPTIONS"
+      TZ: Europe/Berlin
+    ports:
+      - "8080:8080"
+    volumes:
+      - geoserver_data:/opt/geoserver_data
+
+volumes:
+  postgis_data:
+  geoserver_data:
