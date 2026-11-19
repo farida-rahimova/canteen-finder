@@ -1,17 +1,19 @@
 -- CanteenFinder database schema
--- Runs automatically the first time the PostGIS container starts.
+-- Runs automatically the first time the PostGIS container starts (empty data volume).
 
 CREATE EXTENSION IF NOT EXISTS postgis;
 
--- 1) Canteens: fixed locations, entered once
+-- 1) Canteens: found by the scraper on studentenwerk.sh, positions added from scraper/data/canteen-locations.json
 CREATE TABLE canteens (
-	id          SERIAL PRIMARY KEY,
-	name        TEXT NOT NULL UNIQUE,              -- display name, e.g. 'Mensa I'
-	source_name TEXT NOT NULL UNIQUE,              -- exact name used on studentenwerk.sh (for the scraper)
-	city        TEXT NOT NULL,
-	kind        TEXT NOT NULL CHECK (kind IN ('Mensa', 'Cafeteria')),
-	address     TEXT,
-	geom        geometry(Point, 4326) NOT NULL     -- WGS84 longitude/latitude
+	id       SERIAL PRIMARY KEY,
+	ort_id   INTEGER NOT NULL,                      -- location id on studentenwerk.sh (?ort=…)
+	mensa_id INTEGER NOT NULL,                      -- canteen id on studentenwerk.sh (&mensa=…)
+	name     TEXT NOT NULL,                         -- e.g. 'Mensa I with cafeteria and café lounge'
+	city     TEXT NOT NULL,                         -- e.g. 'Kiel'
+	kind     TEXT NOT NULL CHECK (kind IN ('Mensa', 'Cafeteria')),
+	address  TEXT,
+	geom     geometry(Point, 4326),                 -- WGS84 longitude/latitude; NULL until the position is known
+	UNIQUE (ort_id, mensa_id)
 );
 
 CREATE INDEX canteens_geom_idx ON canteens USING GIST (geom);
@@ -22,10 +24,12 @@ CREATE TABLE meals (
 	canteen_id      INTEGER NOT NULL REFERENCES canteens (id) ON DELETE CASCADE,
 	served_on       DATE NOT NULL,
 	name            TEXT NOT NULL,
+	category        TEXT,                          -- 'Canteen' or 'Cafeteria' (counter inside the building)
 	price_students  NUMERIC(5, 2),                 -- NULL if the page shows no price
 	price_employees NUMERIC(5, 2),
 	price_guests    NUMERIC(5, 2),
-	labels          TEXT,                          -- e.g. 'vegan, vegetarian'
+	labels          TEXT,                          -- e.g. 'vegetarian, vegan'
+	allergens       TEXT,                          -- codes as on the website, e.g. 'GlW, So'
 	scraped_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
 	UNIQUE (canteen_id, served_on, name)           -- running the scraper twice creates no duplicates
 );
@@ -43,12 +47,15 @@ SELECT
 	c.kind,
 	c.address,
 	m.name            AS meal_name,
+	m.category,
 	m.price_students,
 	m.price_employees,
 	m.price_guests,
 	m.labels,
+	m.allergens,
 	m.served_on,
 	c.geom
 FROM meals AS m
 JOIN canteens AS c ON c.id = m.canteen_id
-WHERE m.served_on = CURRENT_DATE;
+WHERE m.served_on = CURRENT_DATE
+	AND c.geom IS NOT NULL;

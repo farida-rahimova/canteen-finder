@@ -1,0 +1,28 @@
+{
+	"name": "canteen-scraper",
+	"version": "1.0.0",
+	"private": true,
+	"description": "Scrapes today's meals of all Studentenwerk SH canteens into PostGIS",
+	"type": "module",
+	"engines": {
+		"node": ">=22.18"
+	},
+	"scripts": {
+		"discover": "node --env-file=../.env src/index.ts discover",
+		"scrape": "node --env-file=../.env src/index.ts scrape",
+		"lint": "eslint .",
+		"typecheck": "tsc --noEmit",
+		"geocode": "node src/geocode.ts"
+	},
+	"dependencies": {
+		"cheerio": "^1.2.0",
+		"pg": "^8.23.1"
+	},
+	"devDependencies": {
+		"@dataport/eslint-config-geodev": "^1.1.0",
+		"@types/node": "^26.6.6",
+		"@types/pg": "^8.23.1",
+		"eslint": "^9.39.5",
+		"typescript": "^5.9.3"
+	}
+}
