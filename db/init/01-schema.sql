@@ -53,7 +53,7 @@ SELECT
 	m.price_guests,
 	m.labels,
 	m.allergens,
-	m.served_on,
+	to_char(m.served_on, 'YYYY-MM-DD') AS served_on, -- as text: GeoServer would shift a DATE to the previous day (UTC)
 	c.geom
 FROM meals AS m
 JOIN canteens AS c ON c.id = m.canteen_id

@@ -1,14 +1,58 @@
 {
 	"info": "Positions of the canteens (WGS84). Key: <ort>-<mensa> as in the studentenwerk.sh URL. Addresses are maintained by hand; lon/lat are filled by \"npm run geocode\" and checked on a map.",
-	"1-1": { "address": "Westring 385, 24118 Kiel" },
-	"1-2": { "address": "Leibnizstraße 14, 24118 Kiel" },
-	"1-4": { "address": "Legienstraße 35, 24103 Kiel" },
-	"1-5": { "address": "Grenzstraße 14, 24149 Kiel" },
-	"1-6": { "address": "Sokratesplatz 6, 24149 Kiel" },
-	"2-7": { "address": "Thomas-Fincke-Straße 20, 24943 Flensburg" },
-	"2-14": { "address": "Kanzleistraße 91A, 24943 Flensburg" },
-	"3-8": { "address": "Mönkhofer Weg 241, 23562 Lübeck" },
-	"3-9": { "address": "Große Petersgrube 17, 23552 Lübeck" },
-	"4-11": { "address": "Fritz-Thiedemann-Ring 20, 25746 Heide" },
-	"5-10": { "address": "Feldstraße 143, 22880 Wedel" }
+	"1-1": {
+		"address": "Westring 385, 24118 Kiel",
+		"lon": 10.122759,
+		"lat": 54.337469
+	},
+	"1-2": {
+		"address": "Leibnizstraße 14, 24118 Kiel",
+		"lon": 10.113174,
+		"lat": 54.346822
+	},
+	"1-4": {
+		"address": "Legienstraße 35, 24103 Kiel",
+		"lon": 10.129156,
+		"lat": 54.327822
+	},
+	"1-5": {
+		"address": "Grenzstraße 14, 24149 Kiel",
+		"lon": 10.181017,
+		"lat": 54.329755
+	},
+	"1-6": {
+		"address": "Sokratesplatz 6, 24149 Kiel",
+		"lon": 10.181242,
+		"lat": 54.332378
+	},
+	"2-7": {
+		"address": "Thomas-Fincke-Straße 20, 24943 Flensburg",
+		"lon": 9.453959,
+		"lat": 54.7764
+	},
+	"2-14": {
+		"address": "Kanzleistraße 91A, 24943 Flensburg",
+		"lon": 9.445822,
+		"lat": 54.781509
+	},
+	"3-8": {
+		"address": "Mönkhofer Weg 241, 23562 Lübeck",
+		"lon": 10.700161,
+		"lat": 53.835211
+	},
+	"3-9": {
+		"address": "Große Petersgrube 17, 23552 Lübeck",
+		"lon": 10.682478,
+		"lat": 53.86506
+	},
+	"4-11": {
+		"address": "Fritz-Thiedemann-Ring 20, 25746 Heide",
+		"lon": 9.121936,
+		"lat": 54.194953
+	},
+	"5-10": {
+		"address": "Feldstraße 143, 22880 Wedel",
+		"lon": 9.728251,
+		"lat": 53.578339
+	}
 }
