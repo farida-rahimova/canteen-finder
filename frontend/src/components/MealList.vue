@@ -150,7 +150,6 @@ function canteenText (count: number): string {
 	align-items: start;
 	padding: 0.7rem 0.85rem;
 	border: 1px solid var(--color-border);
-	border-left: 4px solid transparent;
 	border-radius: 0.65rem;
 	background: var(--color-surface);
 	cursor: pointer;
@@ -164,7 +163,7 @@ function canteenText (count: number): string {
 
 .meal-option:has(input:checked) {
 	border-color: var(--color-accent);
-	border-left-color: var(--color-accent);
+	box-shadow: inset 4px 0 0 var(--color-accent);
 	background: var(--color-accent-soft);
 }
 
