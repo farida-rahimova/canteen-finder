@@ -191,8 +191,20 @@ onMounted(load)
 	}
 }
 
-/* Phones in landscape: little height, so a shorter map */
+/* Phones in landscape: little height, so a compact header and a taller map */
 @media (orientation: landscape) and (max-height: 32rem) {
+	.app-header {
+		padding: 0.5rem 1.25rem;
+	}
+
+	.app-header h1 {
+		font-size: 1.25rem;
+	}
+
+	.app-header__subtitle {
+		font-size: 0.85rem;
+	}
+
 	.app-main__map {
 		height: 80vh;
 	}

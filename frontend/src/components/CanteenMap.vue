@@ -148,6 +148,27 @@ onBeforeUnmount(() => {
 	border: 1px solid var(--color-border);
 }
 
+/* OpenLayers' zoom buttons are small by default; WCAG asks for at least 24 × 24 px */
+.canteen-map :deep(.ol-zoom button) {
+	width: 2.25rem;
+	height: 2.25rem;
+	font-size: 1.4rem;
+}
+
+/* Attribution sits on the map image: solid background + underlined links keep it readable on any tile */
+.canteen-map :deep(.ol-attribution) {
+	background: rgb(255 255 255 / 95%);
+}
+
+.canteen-map :deep(.ol-attribution li),
+.canteen-map :deep(.ol-attribution a) {
+	color: var(--color-text);
+}
+
+.canteen-map :deep(.ol-attribution a) {
+	text-decoration: underline;
+}
+
 .canteen-map__help {
 	margin: 0;
 	color: var(--color-muted);
