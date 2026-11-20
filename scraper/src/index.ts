@@ -96,7 +96,7 @@ async function runScrape (): Promise<void> {
 			await replaceMeals(pool, canteenId, day, menu.meals)
 
 			mealCount += menu.meals.length
-			console.info(`${canteen.city.padEnd(13)} ${canteen.name.padEnd(45)} ${menu.closed ? 'closed' : `${String(menu.meals.length)} meals`}`)
+			console.info(`${canteen.city.padEnd(13)} ${canteen.name.padEnd(45)} ${menu.closed ? 'closed' : `${String(menu.meals.length)} ${menu.meals.length === 1 ? 'meal' : 'meals'}`}`)
 		}
 		console.info(`\nDone: ${String(mealCount)} meals for ${day}`)
 	} finally {
