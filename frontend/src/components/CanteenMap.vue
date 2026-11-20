@@ -122,6 +122,25 @@ onBeforeUnmount(() => {
 			aria-label="Map of the canteens. Canteens serving the selected meal are highlighted in orange; the same canteens are listed below the map."
 			aria-describedby="map-help"
 		/>
+		<ul
+			class="canteen-map__legend"
+			aria-label="Map legend"
+		>
+			<li>
+				<span
+					class="legend-dot legend-dot--all"
+					aria-hidden="true"
+				/>
+				All canteens (WMS)
+			</li>
+			<li>
+				<span
+					class="legend-dot legend-dot--selected"
+					aria-hidden="true"
+				/>
+				Serves the selected meal today (WFS)
+			</li>
+		</ul>
 		<p
 			id="map-help"
 			class="canteen-map__help"
@@ -135,7 +154,7 @@ onBeforeUnmount(() => {
 .canteen-map-wrapper {
 	display: flex;
 	flex-direction: column;
-	gap: 0.4rem;
+	gap: 0.5rem;
 	height: 100%;
 }
 
@@ -143,9 +162,9 @@ onBeforeUnmount(() => {
 	flex: 1;
 	width: 100%;
 	min-height: 18rem;
-	border-radius: 0.75rem;
+	border-radius: var(--radius);
 	overflow: hidden;
-	border: 1px solid var(--color-border);
+	box-shadow: var(--shadow-md);
 }
 
 /* OpenLayers' zoom buttons are small by default; WCAG asks for at least 24 × 24 px */
@@ -167,6 +186,42 @@ onBeforeUnmount(() => {
 
 .canteen-map :deep(.ol-attribution a) {
 	text-decoration: underline;
+}
+
+.canteen-map__legend {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.4rem 1.25rem;
+	margin: 0.25rem 0 0;
+	padding: 0;
+	list-style: none;
+	font-size: 0.9rem;
+	font-weight: 600;
+}
+
+.canteen-map__legend li {
+	display: flex;
+	gap: 0.45rem;
+	align-items: center;
+}
+
+.legend-dot {
+	display: inline-block;
+	width: 0.85rem;
+	height: 0.85rem;
+	border: 2px solid #ffffff;
+	border-radius: 50%;
+	box-shadow: 0 0 0 1px var(--color-border-strong);
+}
+
+.legend-dot--all {
+	background: var(--color-wms);
+}
+
+.legend-dot--selected {
+	width: 1.1rem;
+	height: 1.1rem;
+	background: var(--color-accent);
 }
 
 .canteen-map__help {

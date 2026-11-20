@@ -1,13 +1,20 @@
 :root {
-	--color-primary: #003366;
+	--color-primary: #0b2545;
+	--color-primary-light: #13315c;
 	--color-accent: #c2410c;
-	--color-accent-soft: #fff1e8;
-	--color-text: #1a1a1a;
-	--color-muted: #4a4a4a;
-	--color-border: #8a8a8a;
-	--color-surface: #f6f6f4;
-	--color-surface-hover: #ececea;
+	--color-accent-soft: #fff4ec;
+	--color-wms: #1f5f8b;
+	--color-text: #1c1917;
+	--color-muted: #57534e;
+	--color-border: #d6d3d1;
+	--color-border-strong: #78716c;
+	--color-page: #f5f3ef;
+	--color-surface: #ffffff;
+	--color-surface-hover: #faf9f7;
 	--color-error: #b00020;
+	--radius: 0.875rem;
+	--shadow-sm: 0 1px 2px rgb(28 25 23 / 6%), 0 1px 3px rgb(28 25 23 / 8%);
+	--shadow-md: 0 4px 12px rgb(28 25 23 / 8%), 0 2px 4px rgb(28 25 23 / 6%);
 }
 
 *,
@@ -21,21 +28,23 @@ body {
 	font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 	line-height: 1.5;
 	color: var(--color-text);
-	background: #ffffff;
+	background: var(--color-page);
 }
 
 h1 {
 	margin: 0;
-	font-size: 1.6rem;
+	font-size: 1.75rem;
+	letter-spacing: -0.02em;
 }
 
 h2 {
-	margin: 0 0 0.5rem;
+	margin: 0 0 0.75rem;
 	font-size: 1.2rem;
+	letter-spacing: -0.01em;
 }
 
 a {
-	color: var(--color-primary);
+	color: var(--color-primary-light);
 }
 
 /* Clearly visible keyboard focus everywhere */
@@ -45,22 +54,56 @@ a {
 }
 
 .button {
-	padding: 0.5rem 1rem;
+	padding: 0.55rem 1.1rem;
 	border: 0;
-	border-radius: 0.5rem;
+	border-radius: 999px;
 	background: var(--color-primary);
 	color: #ffffff;
 	font: inherit;
+	font-weight: 600;
 	cursor: pointer;
 }
 
+.button:hover {
+	background: var(--color-primary-light);
+}
+
+/* Small label chips (vegan, pork …); colours keep at least 4.5:1 contrast */
 .tag {
 	display: inline-block;
-	padding: 0 0.5rem;
+	padding: 0.05rem 0.6rem;
 	border-radius: 999px;
-	background: #e3efe3;
-	color: #1d4d1d;
+	background: #ece9e4;
+	color: #44403c;
 	font-size: 0.8rem;
+	font-weight: 600;
+}
+
+.tag--vegan {
+	background: #dcfce7;
+	color: #14532d;
+}
+
+.tag--vegetarian {
+	background: #ecfccb;
+	color: #365314;
+}
+
+.tag--organic {
+	background: #e0f2fe;
+	color: #0c4a6e;
+}
+
+.tag--pork,
+.tag--beef,
+.tag--lamb {
+	background: #fde8e8;
+	color: #7f1d1d;
+}
+
+.tag--poultry {
+	background: #fef3c7;
+	color: #713f12;
 }
 
 /* Hidden on screen, but read by screen readers */

@@ -42,6 +42,9 @@ function formatPrice (price: number | null): string {
 					:key="offer.mealId"
 					class="canteen-card"
 				>
+					<p class="canteen-card__city">
+						{{ offer.canteen.city }}
+					</p>
 					<h3 class="canteen-card__name">
 						{{ offer.canteen.name }}
 					</h3>
@@ -69,7 +72,7 @@ function formatPrice (price: number | null): string {
 						<span
 							v-for="label in offer.labels"
 							:key="label"
-							class="tag"
+							:class="['tag', `tag--${label.replace(' ', '-')}`]"
 						>{{ label }}</span>
 					</p>
 					<p
@@ -86,63 +89,89 @@ function formatPrice (price: number | null): string {
 
 <style scoped>
 .canteen-list__hint {
+	margin: 0;
+	padding: 1rem 1.25rem;
+	border: 2px dashed var(--color-border);
+	border-radius: var(--radius);
 	color: var(--color-muted);
+	text-align: center;
 }
 
 .canteen-list__items {
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
-	gap: 0.75rem;
+	grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+	gap: 1rem;
 	margin: 0;
 	padding: 0;
 	list-style: none;
 }
 
 .canteen-card {
-	padding: 0.9rem 1rem;
-	border: 1px solid var(--color-border);
-	border-left: 6px solid var(--color-accent);
-	border-radius: 0.5rem;
+	display: flex;
+	flex-direction: column;
+	padding: 1rem 1.15rem;
+	border-top: 4px solid var(--color-accent);
+	border-radius: var(--radius);
 	background: var(--color-surface);
+	box-shadow: var(--shadow-sm);
+}
+
+.canteen-card__city {
+	align-self: flex-start;
+	margin: 0 0 0.4rem;
+	padding: 0 0.55rem;
+	border-radius: 999px;
+	background: var(--color-accent-soft);
+	color: #9a3412;
+	font-size: 0.78rem;
+	font-weight: 700;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
 }
 
 .canteen-card__name {
 	margin: 0;
 	font-size: 1.05rem;
+	line-height: 1.3;
 }
 
 .canteen-card__address {
-	margin: 0.2rem 0 0.6rem;
+	margin: 0.25rem 0 0.8rem;
 	color: var(--color-muted);
+	font-size: 0.9rem;
 }
 
 .canteen-card__prices {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 0.4rem 1.2rem;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 0.5rem;
 	margin: 0;
+	padding: 0.6rem 0.75rem;
+	border-radius: 0.6rem;
+	background: var(--color-page);
 }
 
 .canteen-card__prices dt {
 	color: var(--color-muted);
-	font-size: 0.85rem;
+	font-size: 0.78rem;
 }
 
 .canteen-card__prices dd {
 	margin: 0;
-	font-weight: 600;
+	font-size: 1.05rem;
+	font-weight: 700;
 }
 
 .canteen-card__tags {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 0.3rem;
-	margin: 0.6rem 0 0;
+	margin: 0.75rem 0 0;
 }
 
 .canteen-card__allergens {
-	margin: 0.5rem 0 0;
+	margin: 0.6rem 0 0;
 	color: var(--color-muted);
-	font-size: 0.85rem;
+	font-size: 0.82rem;
 }
 </style>

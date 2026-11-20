@@ -19,6 +19,9 @@ const selectedOffers = computed(() => offers.value
 /** Canteens to highlight on the map. */
 const highlightedCanteens = computed(() => selectedOffers.value.map((offer) => offer.canteen))
 
+/** Number of canteens that serve at least one meal today. */
+const openCanteens = computed(() => new Set(offers.value.map((offer) => offer.canteen.id)).size)
+
 const today = new Intl.DateTimeFormat('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).format(new Date())
 
 onMounted(load)
@@ -31,10 +34,31 @@ onMounted(load)
 	>Skip to the map and results</a>
 
 	<header class="app-header">
-		<h1>CanteenFinder</h1>
-		<p class="app-header__subtitle">
-			Today’s meals in the canteens of the Studentenwerk Schleswig-Holstein · {{ today }}
-		</p>
+		<div class="app-header__inner">
+			<div class="app-header__brand">
+				<svg
+					class="app-header__icon"
+					viewBox="0 0 24 24"
+					aria-hidden="true"
+					focusable="false"
+				>
+					<path d="M7 2v8a3 3 0 0 0 2 2.8V22h2v-9.2A3 3 0 0 0 13 10V2h-2v7h-1V2H9v7H8V2zm10 0c-1.7 0-3 2-3 5v6h2v9h2V2z" />
+				</svg>
+				<div>
+					<h1>CanteenFinder</h1>
+					<p class="app-header__subtitle">
+						Today’s meals in the canteens of the Studentenwerk Schleswig-Holstein
+					</p>
+				</div>
+			</div>
+			<p class="app-header__meta">
+				<span class="app-header__date">{{ today }}</span>
+				<span
+					v-if="meals.length > 0"
+					class="app-header__stats"
+				>{{ meals.length }} meals · {{ openCanteens }} canteens open</span>
+			</p>
+		</div>
 	</header>
 
 	<main class="app-main">
@@ -96,7 +120,7 @@ onMounted(load)
 	</main>
 
 	<footer class="app-footer">
-		<p>
+		<p class="app-footer__inner">
 			Menu data: <a href="https://studentenwerk.sh/en/food-overview">Studentenwerk Schleswig-Holstein</a> ·
 			Map: © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors
 		</p>
@@ -109,8 +133,10 @@ onMounted(load)
 	left: 1rem;
 	top: -3rem;
 	padding: 0.5rem 1rem;
-	background: var(--color-primary);
-	color: #ffffff;
+	border-radius: 0.5rem;
+	background: var(--color-surface);
+	color: var(--color-primary);
+	font-weight: 600;
 	z-index: 10;
 }
 
@@ -119,25 +145,81 @@ onMounted(load)
 }
 
 .app-header {
-	padding: 1rem 1.25rem;
-	background: var(--color-primary);
+	background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
 	color: #ffffff;
+	box-shadow: var(--shadow-md);
+}
+
+.app-header__inner,
+.app-main,
+.app-footer__inner {
+	max-width: 90rem;
+	margin: 0 auto;
+}
+
+.app-header__inner {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.75rem 2rem;
+	align-items: center;
+	justify-content: space-between;
+	padding: 1.1rem 1.5rem;
+}
+
+.app-header__brand {
+	display: flex;
+	gap: 0.9rem;
+	align-items: center;
+}
+
+.app-header__icon {
+	flex: none;
+	width: 2.75rem;
+	height: 2.75rem;
+	padding: 0.55rem;
+	border-radius: 0.75rem;
+	background: var(--color-accent);
+	fill: #ffffff;
 }
 
 .app-header__subtitle {
-	margin: 0.25rem 0 0;
+	margin: 0.1rem 0 0;
+	color: #dbe4f0;
+}
+
+.app-header__meta {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	margin: 0;
+}
+
+.app-header__date,
+.app-header__stats {
+	padding: 0.25rem 0.8rem;
+	border-radius: 999px;
+	background: rgb(255 255 255 / 12%);
+	font-size: 0.9rem;
+	font-weight: 600;
 }
 
 .app-main {
 	display: grid;
-	gap: 1rem;
-	padding: 1rem 1.25rem;
+	gap: 1.25rem;
+	padding: 1.5rem;
+}
+
+.app-main__meals {
+	padding: 1.1rem;
+	border-radius: var(--radius);
+	background: var(--color-surface);
+	box-shadow: var(--shadow-sm);
 }
 
 .app-main__results {
 	display: flex;
 	flex-direction: column;
-	gap: 1rem;
+	gap: 1.25rem;
 	min-width: 0;
 }
 
@@ -152,14 +234,15 @@ onMounted(load)
 .status {
 	grid-column: 1 / -1;
 	margin: 0;
-	padding: 0.75rem 1rem;
-	border-radius: 0.5rem;
+	padding: 1rem 1.25rem;
+	border-radius: var(--radius);
 	background: var(--color-surface);
-	border: 1px solid var(--color-border);
+	box-shadow: var(--shadow-sm);
+	border-left: 5px solid var(--color-primary-light);
 }
 
 .status--error {
-	border-color: var(--color-error);
+	border-left-color: var(--color-error);
 }
 
 .status--error p {
@@ -167,15 +250,20 @@ onMounted(load)
 }
 
 .app-footer {
-	padding: 1rem 1.25rem;
+	border-top: 1px solid var(--color-border);
 	color: var(--color-muted);
 	font-size: 0.9rem;
+}
+
+.app-footer__inner {
+	margin-block: 0;
+	padding: 1.25rem 1.5rem;
 }
 
 /* Wider screens: meal list on the left, map and results on the right */
 @media (min-width: 52rem) {
 	.app-main {
-		grid-template-columns: minmax(16rem, 22rem) 1fr;
+		grid-template-columns: minmax(17rem, 24rem) 1fr;
 		align-items: start;
 	}
 
@@ -187,22 +275,36 @@ onMounted(load)
 	}
 
 	.app-main__map {
-		height: 60vh;
+		height: 62vh;
+	}
+}
+
+/* Phones: less padding, smaller header */
+@media (max-width: 40rem) {
+	.app-header__inner,
+	.app-main,
+	.app-footer__inner {
+		padding-inline: 1rem;
+	}
+
+	h1 {
+		font-size: 1.4rem;
 	}
 }
 
 /* Phones in landscape: little height, so a compact header and a taller map */
 @media (orientation: landscape) and (max-height: 32rem) {
-	.app-header {
-		padding: 0.5rem 1.25rem;
-	}
-
-	.app-header h1 {
-		font-size: 1.25rem;
+	.app-header__inner {
+		padding-block: 0.5rem;
 	}
 
 	.app-header__subtitle {
-		font-size: 0.85rem;
+		display: none;
+	}
+
+	.app-header__icon {
+		width: 2.25rem;
+		height: 2.25rem;
 	}
 
 	.app-main__map {

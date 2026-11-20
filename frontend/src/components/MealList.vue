@@ -84,7 +84,7 @@ function canteenText (count: number): string {
 					<span
 						v-for="label in meal.labels"
 						:key="label"
-						class="tag"
+						:class="['tag', `tag--${label.replace(' ', '-')}`]"
 					>{{ label }}</span>
 				</span>
 			</label>
@@ -104,53 +104,72 @@ function canteenText (count: number): string {
 .meal-list {
 	display: flex;
 	flex-direction: column;
-	gap: 0.5rem;
+	gap: 0.6rem;
+	width: 100%;
 	min-height: 0;
+}
+
+.meal-list h2 {
+	margin-bottom: 0.25rem;
+}
+
+.meal-list__search-label {
+	font-size: 0.9rem;
+	font-weight: 600;
+	color: var(--color-muted);
 }
 
 .meal-list__search {
 	width: 100%;
-	padding: 0.6rem 0.75rem;
-	border: 2px solid var(--color-border);
-	border-radius: 0.5rem;
+	padding: 0.65rem 0.9rem;
+	border: 1.5px solid var(--color-border-strong);
+	border-radius: 999px;
+	background: var(--color-surface-hover);
 	font: inherit;
+}
+
+.meal-list__search:focus-visible {
+	border-color: var(--color-accent);
+	background: var(--color-surface);
 }
 
 .meal-list__options {
 	display: flex;
 	flex-direction: column;
-	gap: 0.25rem;
+	gap: 0.4rem;
 	margin: 0;
-	padding: 0 0.25rem 0 0;
+	padding: 0.2rem 0.4rem 0.2rem 0.2rem;
 	border: 0;
 	overflow-y: auto;
-}
-
-/* Small screens: the list scrolls by itself, so the map stays close */
-@media (max-width: 51.99rem) {
-	.meal-list__options {
-		max-height: 45vh;
-	}
 }
 
 .meal-option {
 	display: grid;
 	grid-template-columns: auto 1fr;
-	column-gap: 0.6rem;
+	column-gap: 0.65rem;
 	align-items: start;
-	padding: 0.6rem 0.75rem;
+	padding: 0.7rem 0.85rem;
 	border: 1px solid var(--color-border);
-	border-radius: 0.5rem;
+	border-left: 4px solid transparent;
+	border-radius: 0.65rem;
+	background: var(--color-surface);
 	cursor: pointer;
+	transition: background-color 0.15s, border-color 0.15s;
 }
 
 .meal-option:hover {
 	background: var(--color-surface-hover);
+	border-color: var(--color-border-strong);
 }
 
 .meal-option:has(input:checked) {
 	border-color: var(--color-accent);
+	border-left-color: var(--color-accent);
 	background: var(--color-accent-soft);
+}
+
+.meal-option--all .meal-option__name {
+	color: var(--color-primary-light);
 }
 
 .meal-option input {
@@ -160,6 +179,7 @@ function canteenText (count: number): string {
 
 .meal-option__name {
 	font-weight: 600;
+	line-height: 1.35;
 }
 
 .meal-option__details {
@@ -168,11 +188,19 @@ function canteenText (count: number): string {
 	flex-wrap: wrap;
 	gap: 0.3rem;
 	align-items: center;
+	margin-top: 0.3rem;
 	color: var(--color-muted);
-	font-size: 0.9rem;
+	font-size: 0.875rem;
 }
 
 .meal-list__empty {
 	color: var(--color-muted);
+}
+
+/* Small screens: the list scrolls by itself, so the map stays close */
+@media (max-width: 51.99rem) {
+	.meal-list__options {
+		max-height: 45vh;
+	}
 }
 </style>
