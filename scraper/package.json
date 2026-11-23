@@ -12,7 +12,8 @@
 		"scrape": "node --env-file=../.env src/index.ts scrape",
 		"lint": "eslint .",
 		"typecheck": "tsc --noEmit",
-		"geocode": "node src/geocode.ts"
+		"geocode": "node src/geocode.ts",
+		"demo": "node --env-file=../.env src/demo.ts"
 	},
 	"dependencies": {
 		"cheerio": "^1.2.0",

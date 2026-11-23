@@ -19,6 +19,9 @@ const selectedOffers = computed(() => offers.value
 /** Canteens to highlight on the map. */
 const highlightedCanteens = computed(() => selectedOffers.value.map((offer) => offer.canteen))
 
+/** True when the meals come from the scraper's demo mode ("npm run demo"), not from the real menu. */
+const isDemo = computed(() => offers.value.some((offer) => offer.category === 'Demo'))
+
 /** Number of canteens that serve at least one meal today. */
 const openCanteens = computed(() => new Set(offers.value.map((offer) => offer.canteen.id)).size)
 
@@ -92,6 +95,15 @@ onMounted(load)
 			role="status"
 		>
 			No meals today – all canteens are closed (for example on weekends and public holidays).
+		</p>
+
+		<p
+			v-if="isDemo"
+			class="status status--demo"
+			role="status"
+		>
+			<strong>Demo data:</strong> these are sample meals, not today’s real menu.
+			The canteens are closed today (for example on weekends or in the semester break).
 		</p>
 
 		<aside
@@ -239,6 +251,11 @@ onMounted(load)
 	background: var(--color-surface);
 	box-shadow: var(--shadow-sm);
 	border-left: 5px solid var(--color-primary-light);
+}
+
+.status--demo {
+	border-left-color: var(--color-accent);
+	background: var(--color-accent-soft);
 }
 
 .status--error {
